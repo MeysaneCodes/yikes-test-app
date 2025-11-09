@@ -1,4 +1,4 @@
-name: Build and deploy Next.js app to Azure Web App - yikes-test-app
+name: Build and deploy Next.js standalone app to Azure Web App - yikes-test-app
 
 on:
   push:
@@ -9,8 +9,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
 
     steps:
       - uses: actions/checkout@v4
@@ -23,15 +21,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build Next.js app
+      - name: Build standalone Next.js app
         run: npm run build
 
-      - name: Prepare production package
-        run: |
-          npm prune --production
-          zip -r release.zip . -x "*.git*" "*.github*" "*node_modules/.cache*"
+      - name: Package standalone build
+        run: zip -r release.zip .next/standalone .next/static public package.json
 
-      - name: Upload artifact for deployment
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: app
