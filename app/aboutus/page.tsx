@@ -1,4 +1,4 @@
-export default function aboutusPage() {
+export default function AboutusPage() {
     return (
         <div>Finally</div>
     );
